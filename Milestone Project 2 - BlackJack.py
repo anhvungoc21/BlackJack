@@ -1,4 +1,3 @@
-
 # Global Values
 import random
 from IPython.display import clear_output
