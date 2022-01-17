@@ -1,24 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# Computer:
-#     - 1 card faced up, 1 card faced down
-#     - Draw after Player Stay
-# 
-# Player:
-#     - Draw until Stay or Bust
-#     - Ace is either 1 or 11
-#     - Jack Queen King = 10
-#     - Has a bank of chips, deposit every game
-#     - Can choose to play again/stop
-#     
-# Possible Outcomes:
-# 1. Player Busts, Computer hasn't played -> Player lose
-# 2. Player Stays, Computer > Player -> Player lose
-# 3. Player Stays, Computer draws then Busts -> Player win
-
-# In[1]:
-
 
 # Global Values
 import random
@@ -29,9 +8,7 @@ card_values = {'Ace':None, 'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Sev
 card_suits = ('Diamonds', "Hearts", "Clubs", "Spades")
 
 
-# In[2]:
-
-
+# Card
 class Card():
     '''
     ATTRIBUTES: rank, suit, value
@@ -45,10 +22,8 @@ class Card():
     def __str__(self):
         return self.rank + ' of ' + self.suit
 
-
-# In[3]:
-
-
+      
+# Deck
 class Deck():
     '''
     ATTRIBUTES: all_cards
@@ -67,11 +42,9 @@ class Deck():
                 
     def deal_card(self):
         return self.all_cards.pop(0)
-
-
-# In[4]:
-
-
+      
+   
+# Player  
 class Player():
     '''
     ATTRIBUTES: hand, balance
@@ -79,7 +52,6 @@ class Player():
     '''
     def __init__(self,balance):
         self.hand = []
-        # Can create a separate chip class instead.
         self.balance = balance
     
     def bet(self):    
@@ -98,11 +70,6 @@ class Player():
         self.hand.append(card)
         self.value += 
         
-    # Instead, can create an attribute self.points. 
-    # Whenever a card is drawn, add to self.points.
-    
-    # Also, can create an attribute self.aces 
-    # Whenever a card is drawn, add 1 to self.aces()
     def count_points(self):
         total = 0
         ace_list = []
@@ -124,23 +91,17 @@ class Player():
         return total
 
 
-# In[ ]:
-
-
-#### LOGIC
+# Game Logic
 while True:
-    ### Set up:
+    # Set up:
     print('Welcome to BlackJack!')
     clear_output()
     
-    ## Player:
-    # Player starts with $1000
+    # Player & Dealer:
     MyPlayer = Player(1000)
-    
-    ## Dealer:
     MyDealer = Player(0)
     
-    ### Game begins:
+    # Game begins:
     game_on = True
     
     while game_on:
@@ -170,7 +131,6 @@ while True:
             clear_output()
             print(f'You have deposited ${bet}!')
             print(f'Dealer has {dealer_card}')
-            
             print('Your cards are: ')            
             for card in MyPlayer.hand:
                 print(f'- {card}')
@@ -182,14 +142,15 @@ while True:
                 draw = True
             else:
                 turn = 'dealer'
-                
+            
+            # Player is drawing:
             while draw == True:
                 clear_output()
                 
                 MyPlayer.draw(GameDeck.deal_card())
                 
                 print(f'Dealer has {dealer_card}')
-                
+          
                 print('Your cards are: ')
                 for card in MyPlayer.hand:
                     print(f'- {card}')
@@ -210,7 +171,7 @@ while True:
         # Dealer's turn:
         if turn == 'dealer':
             clear_output()
-             
+       
             round_over = False
             
             while round_over == False:
@@ -225,7 +186,7 @@ while True:
                     print(f'Player now has ${MyPlayer.balance}')
                     round_over = True
                     turn = False
-
+                    
                 elif MyDealer.count_points() > 21:
                     print('Dealer\'s cards are: ')
                     for card in MyDealer.hand:
@@ -251,10 +212,8 @@ while True:
                 
                 if continue_play == 'N':
                     game_on = False
-        
+                    
+    # Play again?    
     if input('Do you want to play again? (Y or N): ') == 'N':
         print('Thanks for playing!')
         break
-
-
-# # 
